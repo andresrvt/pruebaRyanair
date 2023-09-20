@@ -1,0 +1,29 @@
+.customNavbar{
+    background: rgb(225,224,244);
+    background: linear-gradient(90deg, rgba(225,224,244,1) 13%, rgb(29, 41, 214) 100%);    
+    /* padding-top: 7%; */
+}
+
+.operations{
+    color: white;
+    font-size: xx-large;
+}
+
+.input-group-append {
+    cursor: pointer;  
+}
+
+.divider{
+    background: gold;
+    padding-top: 5px;
+}
+
+.sidebar {
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+  }
+  
+.sidebar .active {
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+  }
+  
