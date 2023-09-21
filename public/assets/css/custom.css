@@ -38,3 +38,8 @@ thead{
     color: rgb(60, 60, 196);
     font-weight: 500;
 }
+
+.btn{
+    background-color: rgb(71, 71, 214);
+    color: gold;
+}

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\FlightController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('post/flight', [FlightController::class, 'createFlight']);
-Route::get('flights/', [FlightController::class, 'getFlights']);
+Route::get('/app', [FlightController::class, 'getFlights'])->name('get.flights');
 Route::delete('delete/flight/{id}', [FlightController::class, 'deleteFlight']);
 

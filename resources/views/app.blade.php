@@ -37,7 +37,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     @routes
-    @inertiaHead
 </head>
 
 <body>
@@ -47,7 +46,7 @@
             <div class="row">
                 <div class="col-4">
                     <form class="row col-12">
-                        <div class="text-center col-6 px-5 py-3">
+                        <div class="text-center col-6 px-5 py-2">
                             <div class="input-group date" data-provide="datepicker">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="fa-solid fa-arrow-left"></i>
@@ -59,17 +58,22 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="py-1">
+                                <button class="btn py-1">
+                                    <span>Today</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="col-2 py-3">
+                        <div class="col-2 py-2">
                             <select class="form-select select" aria-label="Default select example">
                                 <option selected>TFS</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
-                              </select>
+                            </select>
                         </div>
                     </form>
 
-                    <div class="col-6 px-2">
+                    <div class="col-6 px-2 py-2">
                         <div class="input-group">
                             <input type="search" class="form-control rounded"
                                 placeholder="Flight, Orig, Dest, Reg, etc" aria-label="Search"
@@ -113,37 +117,30 @@
             </div>
             <div class="col-11 p-0">
                 <div class="row">
-                    <div class="col-3 p-0">
+                    <div class="col-5 p-0">
                         <table class="table border table-condensed m-0">
-
-
-                            <h4 style="color: white">------</h4>
+                            <h4>Flight Information</h4>
                             <thead>
                                 <tr>
-                                    <th>APT</th>
-                                    <th>Flight Status</th>
-                                    <th>Reg</th>
-                                    <th>A/C Type</th>
+                                    <th>Ident</th>
+                                    <th>Status</th>
+                                    <th>Gate Origin</th>
+                                    <th>Progress Percent</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($flights as $flight)
                                 <tr>
-                                    <td>Dato 1</td>
-                                    <td>Dato 1</td>
-                                    <td>Dato 1</td>
-                                    <td>Dato 1</td>
+                                    <td>{{ $flight->ident }}</td>
+                                    <td>{{ $flight->status }}</td>
+                                    <td>{{ $flight->gate_origin }}</td>
+                                    <td>{{ $flight->progress_percent }}</td>
                                 </tr>
-                                <tr>
-                                    <td>Dato 2</td>
-                                    <td>Dato 2</td>
-                                    <td>Dato 2</td>
-                                    <td>Dato 2</td>
-                                </tr>
-                                <!-- Agrega más filas según sea necesario -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4 p-0">
+                    <div class="col-3 p-0">
                         <!-- Contenido de la segunda columna -->
                         <table class="table border table-condensed m-0">
 
@@ -151,99 +148,43 @@
 
                             <thead>
                                 <tr>
-                                    <th>Flight Nº</th>
-                                    <th>Orig</th>
-                                    <th>ETA</th>
-                                    <th>STA</th>
-                                    <th>ATA</th>
-                                    <th>TOB</th>
-                                    <th>BAG</th>
-                                    <th>Stand</th>
+                                    <th>Origin City</th>
+                                    <th>Origin Code</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($flights as $flight)
                                 <tr>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
-                                    <td>Dato 3</td>
+                                    <td>{{ $flight->origin_city }}</td>
+                                    <td>{{ $flight->origin_code }}</td>
                                 </tr>
-                                <tr>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                    <td>Dato 4</td>
-                                </tr>
-                                <!-- Agrega más filas según sea necesario -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-4 p-0">
-                        <!-- Contenido de la tercera columna -->
+                
+                    <div class="col-3 p-0">
                         <table class="table border table-condensed m-0">
                             <h4>Departures</h4>
                             <thead>
                                 <tr>
-                                    <th>Flight Nº</th>
-                                    <th>Orig</th>
-                                    <th>ETA</th>
-                                    <th>STA</th>
-                                    <th>ATA</th>
-                                    <th>TOB</th>
+                                    <th>Destination City</th>
+                                    <th>Destination Code</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($flights as $flight)
                                 <tr>
-                                    <td>Dato 5</td>
-                                    <td>Dato 5</td>
-                                    <td>Dato 5</td>
-                                    <td>Dato 5</td>
-                                    <td>Dato 5</td>
-                                    <td>Dato 5</td>
+                                    <td>{{ $flight->destination_city }}</td>
+                                    <td>{{ $flight->destination_code }}</td>
                                 </tr>
-                                <tr>
-                                    <td>Dato 6</td>
-                                    <td>Dato 6</td>
-                                    <td>Dato 6</td>
-                                    <td>Dato 6</td>
-                                    <td>Dato 6</td>
-                                    <td>Dato 6</td>
-                                </tr>
-                                <!-- Agrega más filas según sea necesario -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Sidebar -->
-
-        <!-- Navbar -->
-        {{-- <div class="row">
-            <!-- Sidebar -->
-            <div class="col-1 px-3">
-                <div class="text-end py-2 px-3">
-                    <a href="">
-                        <i class="fa-solid fa-plus fa-2x"></i>
-                    </a>
-                </div>
-                <div class="text-end px-3">
-                    <a href="">
-                        <i class="fa-solid fa-share-nodes fa-2x"></i>
-                    </a>
-                </div>
-            </div> --}}
-
-
     </div>
     </div>
 </body>
@@ -262,7 +203,7 @@
         var today = new Date();
         var year = today.getFullYear();
         var month = String(today.getMonth() + 1).padStart(2,
-        '0'); // Añadir ceros a la izquierda si es necesario
+            '0'); // Añadir ceros a la izquierda si es necesario
         var day = String(today.getDate()).padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
         var currentDate = year + '-' + month + '-' + day;
 
