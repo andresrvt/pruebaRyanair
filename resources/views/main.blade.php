@@ -196,8 +196,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Ident: <span id="flightIdent">{{ $flight->ident }}</span></p>
-                    <!-- Agrega esta lista dentro del modal para mostrar los `ident` de los vuelos -->
-                    <ul id="flightIdentList"></ul>
+
 
                     <!-- Agrega más campos de información del vuelo aquí -->
                 </div>
@@ -301,6 +300,16 @@
 
         // Resto de tu código JavaScript aquí
     </script>
+
+    {{-- <script>
+        // Función que recarga la página cada 5 segundos (5000 milisegundos)
+        function autoReload() {
+            location.reload();
+        }
+
+        // Llama a la función cada 5000 milisegundos (5 segundos)
+        setInterval(autoReload, 5000);
+    </script> --}}
 </body>
 
 </html>

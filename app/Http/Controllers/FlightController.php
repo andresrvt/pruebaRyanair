@@ -27,8 +27,9 @@ class FlightController extends Controller
         $apiKey = 'aW21dg0PAgsIVPbdxe4Fvx7TI3uej00M';
         $fxmlUrl = "https://aeroapi.flightaware.com/aeroapi/airports/SVQ/flights/scheduled_arrivals";
     
+        $ident = 'SWA45';
         $queryParams = array(
-            'max_pages' => 2
+            'max_pages' => 1
         );
         $url = $fxmlUrl . '?' . http_build_query($queryParams);
     
@@ -72,10 +73,6 @@ class FlightController extends Controller
     
                     $flights[] = $flight;
                 }
-    
-                // Aquí es donde puedes manejar la lógica para verificar nuevos vuelos y agregarlos
-                // Puedes comparar los identificadores de los vuelos existentes y los nuevos vuelos
-                // y agregar nuevos vuelos a la base de datos si no existen.
     
                 // Por ejemplo:
                 $existingIdentifiers = Flight::pluck('ident')->toArray();
