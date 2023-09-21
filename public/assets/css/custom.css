@@ -7,6 +7,7 @@
 .operations{
     color: white;
     font-size: xx-large;
+    font-weight: 700;
 }
 
 .input-group-append {
@@ -25,5 +26,15 @@
 .sidebar .active {
     border-radius: 5px;
     box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
-  }
+}
   
+thead{
+    background-color: rgb(60, 60, 196);
+    color: gold;
+}
+
+.select{
+    background-color: gold;
+    color: rgb(60, 60, 196);
+    font-weight: 500;
+}

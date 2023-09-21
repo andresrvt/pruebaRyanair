@@ -185,4 +185,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'guzzle_test_url' => env('GUZZLE_TEST_URL'),
 ];

@@ -46,21 +46,39 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-4">
-                    <form class="row">
-                        <div class="col-5 px-5 py-3">
+                    <form class="row col-12">
+                        <div class="text-center col-6 px-5 py-3">
                             <div class="input-group date" data-provide="datepicker">
                                 <span class="input-group-text bg-light d-block">
-                                    <i class="fa fa-row"></i>
+                                    <i class="fa-solid fa-arrow-left"></i>
                                 </span>
                                 <input type="text" class="form-control" id="date" />
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-light d-block">
-                                        <i class="fa fa-row"></i>
+                                        <i class="fa-solid fa-arrow-right"></i>
                                     </span>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-2 py-3">
+                            <select class="form-select select" aria-label="Default select example">
+                                <option selected>TFS</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                              </select>
+                        </div>
                     </form>
+
+                    <div class="col-6 px-2">
+                        <div class="input-group">
+                            <input type="search" class="form-control rounded"
+                                placeholder="Flight, Orig, Dest, Reg, etc" aria-label="Search"
+                                aria-describedby="search-addon" />
+                            <span class="input-group-text border-0" id="search-addon">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="text-center py-5 col-8">
@@ -74,7 +92,7 @@
 
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid py-4">
         <div class="row">
             <div class="col-1 py-3">
                 <!-- Sidebar -->
@@ -85,8 +103,12 @@
                     <a href="#" class="list-group-item list-group-item-action py-2 ripple">
                         <i class="fa-solid fa-share-nodes"></i>
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
-                            class="fas fa-lock me-3"></i></a>
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fa-solid fa-lock"></i>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                        <i class="fa-solid fa-eye-slash"></i>
+                    </a>
                 </div>
             </div>
             <div class="col-11 p-0">
@@ -95,7 +117,7 @@
                         <table class="table border table-condensed m-0">
 
 
-                            <h3 style="color: white">Oculto</h3>
+                            <h4 style="color: white">------</h4>
                             <thead>
                                 <tr>
                                     <th>APT</th>
@@ -125,7 +147,7 @@
                         <!-- Contenido de la segunda columna -->
                         <table class="table border table-condensed m-0">
 
-                            <h3>Arrivals</h3>
+                            <h4>Arrivals</h4>
 
                             <thead>
                                 <tr>
@@ -167,7 +189,7 @@
                     <div class="col-4 p-0">
                         <!-- Contenido de la tercera columna -->
                         <table class="table border table-condensed m-0">
-                            <h3>Departures</h3>
+                            <h4>Departures</h4>
                             <thead>
                                 <tr>
                                     <th>Flight Nº</th>
@@ -235,11 +257,12 @@
 </script>
 
 <script type="text/javascript">
-    $(function () {
+    $(function() {
         // Obtener la fecha actual en el formato deseado (por ejemplo, YYYY-MM-DD)
         var today = new Date();
         var year = today.getFullYear();
-        var month = String(today.getMonth() + 1).padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
+        var month = String(today.getMonth() + 1).padStart(2,
+        '0'); // Añadir ceros a la izquierda si es necesario
         var day = String(today.getDate()).padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
         var currentDate = year + '-' + month + '-' + day;
 
