@@ -1,54 +1,37 @@
 <template>
-  <div>
-    <h1>Información de Vuelo</h1>
-    <ul>
-      <li v-for="flight in flights" :key="flight.id">{{ flight.name }} - {{ flight.destination }}</li>
-    </ul>
-  </div>
+    <tbody>
+        @foreach ($flights as $flight)
+        <tr v-for="flight in flights" :key="flight.ident">
+            <td>{{ flight.ident }}</td>
+            <td>{{ flight.status }}</td>
+            <td>{{ flight.gate_origin }}</td>
+            <td>{{ flight.progress_percent }}</td>
+        </tr>
+        @endforeach
+    </tbody>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      flights: [],
-    };
-  },
-  mounted() {
-    // Realiza una solicitud a la API de vuelos al cargar el componente
-    axios.get('/api/flights')
-      .then(response => {
-        this.flights = response.data;
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  },
-};
-
-</script>
-
-<script>
-export default {
-  data() {
-    return {
-      flights: [],
-    };
-  },
-  mounted() {
-    this.fetchFlights(); // Realiza la primera solicitud al montar el componente
-    setInterval(this.fetchFlights, 60000); // Realiza una solicitud cada minuto (ajusta el intervalo según tus necesidades)
-  },
-  methods: {
-    fetchFlights() {
-      axios.get('/api/flights')
-        .then(response => {
-          this.flights = response.data;
-        })
-        .catch(error => {
-          console.error(error);
-        });
+    data() {
+        return {
+            flights: [],
+        };
     },
-  },
+    mounted() {
+        // Realizar la primera solicitud AJAX al cargar el componente
+        this.fetchFlights();
+
+        // Configurar una actualización periódica cada 1 segundos (ajusta según sea necesario)
+        setInterval(this.fetchFlights, 1000);
+    },
+    methods: {
+        fetchFlights() {
+            // Realizar una solicitud AJAX para obtener los datos de vuelo desde tu API de Laravel
+            axios.get("/api/flights").then((response) => {
+                this.flights = response.data;
+            });
+        },
+    },
 };
 </script>

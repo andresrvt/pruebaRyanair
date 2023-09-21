@@ -26,51 +26,78 @@ class FlightController extends Controller
     {
         $apiKey = 'aW21dg0PAgsIVPbdxe4Fvx7TI3uej00M';
         $fxmlUrl = "https://aeroapi.flightaware.com/aeroapi/airports/SVQ/flights/scheduled_arrivals";
-
-        $ident = 'SWA45';
+    
         $queryParams = array(
             'max_pages' => 2
         );
         $url = $fxmlUrl . '?' . http_build_query($queryParams);
-
+    
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('x-apikey: ' . $apiKey));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
+    
         if ($result = curl_exec($ch)) {
             curl_close($ch);
             $data = json_decode($result, true);
-        
+    
             if (isset($data['scheduled_arrivals']) && is_array($data['scheduled_arrivals'])) {
                 $flights = [];
-        
+    
                 foreach ($data['scheduled_arrivals'] as $arrival) {
-                    $flight = new Flight();
-        
-                    // Acceder a atributos en el nivel superior del objeto arrival
-                    $flight->ident = $arrival['ident'];
-                    $flight->status = $arrival['status'];
-                    $flight->gate_origin = $arrival['gate_origin'];
-                    $flight->progress_percent = $arrival['progress_percent'];
-        
-                    // Acceder a atributos dentro de objetos anidados (origin y destination)
-                    if (isset($arrival['origin'])) {
-                        $flight->origin_code = $arrival['origin']['code'];
-                        $flight->origin_city = $arrival['origin']['city'];
+                    // Definir las condiciones para buscar un registro existente
+                    $conditions = ['ident' => $arrival['ident']];
+    
+                    // Verifica si ya existe un registro con estas condiciones
+                    $existingFlight = Flight::where($conditions)->first();
+    
+                    // Definir los valores a actualizar o insertar
+                    $values = [
+                        'status' => $arrival['status'],
+                        'gate_origin' => $arrival['gate_origin'],
+                        'progress_percent' => $arrival['progress_percent'],
+                    ];
+    
+                    if ($existingFlight) {
+                        // Si ya existe, actualiza el registro existente
+                        $existingFlight->update($values);
+                        $flight = $existingFlight;
+                    } else {
+                        // Si no existe, crea un nuevo registro
+                        $flight = new Flight($values);
+                        $flight->ident = $arrival['ident'];
+                        $flight->save();
                     }
-        
-                    if (isset($arrival['destination'])) {
-                        $flight->destination_code = $arrival['destination']['code'];
-                        $flight->destination_city = $arrival['destination']['city'];
-                    }
-
+    
+                    // Resto del código para asignar otros valores si es necesario
+    
                     $flights[] = $flight;
                 }
-
-                return view('app', ['flights' => $flights]);
+    
+                // Aquí es donde puedes manejar la lógica para verificar nuevos vuelos y agregarlos
+                // Puedes comparar los identificadores de los vuelos existentes y los nuevos vuelos
+                // y agregar nuevos vuelos a la base de datos si no existen.
+    
+                // Por ejemplo:
+                $existingIdentifiers = Flight::pluck('ident')->toArray();
+                $newIdentifiers = array_column($data['scheduled_arrivals'], 'ident');
+    
+                $identifiersToAdd = array_diff($newIdentifiers, $existingIdentifiers);
+    
+                foreach ($identifiersToAdd as $identifier) {
+                    // Crea un nuevo registro para los vuelos que no existen
+                    $newFlight = new Flight([
+                        'ident' => $identifier,
+                        // Otros campos si es necesario
+                    ]);
+                    $newFlight->save();
+                    $flights[] = $newFlight;
+                }
+    
+                return view('main', ['flights' => $flights]);
             }
         }
-
-
     }
+    
+    
+    
 }

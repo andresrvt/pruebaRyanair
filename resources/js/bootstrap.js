@@ -4,10 +4,12 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import axios from 'axios';
-window.axios = axios;
+window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Configura la URL base para las solicitudes Axios
+window.axios.defaults.baseURL = '/main'; // Cambia '/api' a la URL de tu API si es diferente
+
+// ... Otras configuraciones de Axios ...
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

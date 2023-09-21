@@ -43,3 +43,8 @@ thead{
     background-color: rgb(71, 71, 214);
     color: gold;
 }
+
+.changed-background {
+    background-color: yellow; /* Cambia el color de fondo a amarillo cuando cambia */
+}
+

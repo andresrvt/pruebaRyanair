@@ -2,41 +2,37 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Información de vuelos</title>
 
     <!-- ===============================================-->
-    <!--    Stylesheets-->
+    <!-- Stylesheets -->
     <!-- ===============================================-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous">
-    <link href="{{ URL::asset('assets/css/theme.css') }}" rel="stylesheet" />
-
     <link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('assets/css/custom.css') }}" rel="stylesheet" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <!-- Uncomment the next line if you plan to use Bootstrap Datepicker -->
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> --}}
 
     <!-- ===============================================-->
-    <!--    JavaScripts-->
+    <!-- JavaScripts -->
     <!-- ===============================================-->
-
-    <script defer src="{{ URL::asset('assets/vendors/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.5/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet">
-
-    <script defer src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-
-    @routes
 </head>
 
 <body>
@@ -115,7 +111,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-11 p-0">
+            <div class="col-11 p-0" id="reload">
                 <div class="row">
                     <div class="col-5 p-0">
                         <table class="table border table-condensed m-0">
@@ -130,12 +126,11 @@
                             </thead>
                             <tbody>
                                 @foreach ($flights as $flight)
-                                <tr>
-                                    <td>{{ $flight->ident }}</td>
-                                    <td>{{ $flight->status }}</td>
-                                    <td>{{ $flight->gate_origin }}</td>
-                                    <td>{{ $flight->progress_percent }}</td>
-                                </tr>
+                                    <tr>
+                                        <td class="changed">{{ $flight->ident }}</td>
+                                        <td class="changed">{{ $flight->status }}</td>
+                                        <td class="changed">{{ $flight->gate_origin }}</td>
+                                        <td class="changed">{{ $flight->progress_percent }}</td>
                                 @endforeach
                             </tbody>
                         </table>
@@ -154,15 +149,15 @@
                             </thead>
                             <tbody>
                                 @foreach ($flights as $flight)
-                                <tr>
-                                    <td>{{ $flight->origin_city }}</td>
-                                    <td>{{ $flight->origin_code }}</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $flight->origin_city }}</td>
+                                        <td>{{ $flight->origin_code }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                
+
                     <div class="col-3 p-0">
                         <table class="table border table-condensed m-0">
                             <h4>Departures</h4>
@@ -174,10 +169,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($flights as $flight)
-                                <tr>
-                                    <td>{{ $flight->destination_city }}</td>
-                                    <td>{{ $flight->destination_code }}</td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ $flight->destination_city }}</td>
+                                        <td>{{ $flight->destination_code }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -186,31 +181,126 @@
             </div>
         </div>
     </div>
+
     </div>
+
+    <div class="modal fade" id="newFlightModal" tabindex="-1" role="dialog" aria-labelledby="newFlightModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newFlightModalLabel">Nuevo Registro de Vuelo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ident: <span id="flightIdent">{{ $flight->ident }}</span></p>
+                    <!-- Agrega esta lista dentro del modal para mostrar los `ident` de los vuelos -->
+                    <ul id="flightIdentList"></ul>
+
+                    <!-- Agrega más campos de información del vuelo aquí -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Verificar si hay un nuevo vuelo (simulado con una variable isNewFlight)
+        var isNewFlight = true; // Debes actualizar esta variable según tu lógica
+
+        // Mostrar el modal si hay un nuevo vuelo
+        if (isNewFlight) {
+            $('#newFlightModal').modal('show');
+        }
+    </script>
+
+    <script>
+        // Función para mostrar los `ident` de los vuelos en el modal
+        function mostrarVuelos(vuelos) {
+            // Limpia el contenido actual del modal
+            $('#newFlightIdentList').empty();
+
+            // Itera sobre los vuelos y agrega sus `ident` al modal
+            vuelos.forEach(function(vuelo) {
+                $('#newFlightIdentList').append('<li>' + vuelo.ident + '</li>');
+            });
+
+            // Muestra el modal
+            $('#newFlightModal').modal('show');
+        }
+
+        // Función para obtener los vuelos previamente mostrados desde una cookie
+        function obtenerVuelosPrevios() {
+            var vuelosPrevios = [];
+
+            // Obtener el valor de la cookie que almacena los IDs de vuelos previamente mostrados
+            var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)vuelosPrevios\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+            if (cookieValue) {
+                vuelosPrevios = cookieValue.split('|');
+            }
+
+            return vuelosPrevios;
+        }
+
+        // Obtener la lista de vuelos previamente mostrados
+        var vuelosPrevios = obtenerVuelosPrevios();
+
+        // Obtener la lista de vuelos más recientes de la variable $flights
+        var vuelosRecientes = $flights; // Asegúrate de que $flights contenga tus vuelos
+
+        // Identificar los vuelos nuevos que no estaban en la lista previa
+        var vuelosNuevos = vuelosRecientes.filter(function(vuelo) {
+            return !vuelosPrevios.includes(vuelo.ident);
+        });
+
+        // Mostrar los `ident` de los vuelos nuevos en el modal
+        mostrarVuelos(vuelosNuevos);
+
+        // Almacenar los IDs de los vuelos mostrados en la cookie
+        document.cookie = "vuelosPrevios=" + vuelosRecientes.map(function(vuelo) {
+            return vuelo.ident;
+        }).join('|');
+    </script>
+
+
+
+    <script type="text/javascript">
+        $(function() {
+            // Obtener la fecha actual en el formato deseado (por ejemplo, YYYY-MM-DD)
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = String(today.getMonth() + 1).padStart(2,
+                '0'); // Añadir ceros a la izquierda si es necesario
+            var day = String(today.getDate()).padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
+            var currentDate = year + '-' + month + '-' + day;
+
+            // Establecer la fecha actual en el campo de entrada
+            $('#date').val(currentDate);
+
+            // Inicializar el datepicker si aún no lo has hecho
+            $('#datepicker').datepicker();
+        });
+    </script>
+
+    <script>
+        // Verificar si hay un nuevo vuelo (simulado con una variable isNewFlight)
+        var isNewFlight = true; // Debes actualizar esta variable según tu lógica
+
+        // Mostrar el modal si hay un nuevo vuelo
+        $(document).ready(function() {
+            if (isNewFlight) {
+                $('#newFlightModal').modal('show');
+            }
+        });
+
+        // Resto de tu código JavaScript aquí
+    </script>
 </body>
 
 </html>
-
-<script>
-    $(function() {
-        $("#datepicker").datepicker();
-    });
-</script>
-
-<script type="text/javascript">
-    $(function() {
-        // Obtener la fecha actual en el formato deseado (por ejemplo, YYYY-MM-DD)
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = String(today.getMonth() + 1).padStart(2,
-            '0'); // Añadir ceros a la izquierda si es necesario
-        var day = String(today.getDate()).padStart(2, '0'); // Añadir ceros a la izquierda si es necesario
-        var currentDate = year + '-' + month + '-' + day;
-
-        // Establecer la fecha actual en el campo de entrada
-        $('#date').val(currentDate);
-
-        // Inicializar el datepicker si aún no lo has hecho
-        $('#datepicker').datepicker();
-    });
-</script>

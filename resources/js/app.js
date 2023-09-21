@@ -1,29 +1,26 @@
-import './bootstrap';
-import '../css/app.css';
+require('./bootstrap');
+import './bootstrap'
 
-import { createApp, h } from 'vue';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
-
-import './bootstrap';
-
-const app = createApp({});
-
-app.mount("#app");
-
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
-createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
-    setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
-            .use(plugin)
-            .use(ZiggyVue, Ziggy)
-            .mount(el);
+window.app = createApp({
+    setup() {
+        return {
+            message: 'Welcome to Your Vue.js App',
+        };
     },
-    progress: {
-        color: '#4B5563',
+    components: {
+        HelloWorld
+    },
+}).mount('#reload');
+// Importa Vue.js y crea una instancia de Vue
+import Vue from 'vue';
+
+// Importa tu componente de Vue.js
+import FlightInfo from '@/components/FlightInfo.vue';
+
+// Crea una instancia de Vue y monta el componente en un elemento con ID 'app'
+const reload = new Vue({
+    el: '#reload',
+    components: {
+        FlightInfo, // Registra tu componente aquí
     },
 });
