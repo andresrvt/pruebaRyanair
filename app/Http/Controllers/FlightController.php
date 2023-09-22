@@ -127,6 +127,7 @@ class FlightController extends Controller
                         $flight->destination_city = $arrival['destination']['city'];
                     }
     
+                    $flight->created_at = now();
                     $flight->save();
                     $flights[] = $flight;
                 }
@@ -136,6 +137,4 @@ class FlightController extends Controller
         }
     }
     
-
-
 }

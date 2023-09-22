@@ -31,6 +31,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('post/flight', [FlightController::class, 'createFlight']);
-Route::get('/main', [FlightController::class, 'getFlights'])->name('get.flights');
+Route::get('/', [FlightController::class, 'getFlights'])->name('get.flights');
 Route::delete('delete/flight/{id}', [FlightController::class, 'deleteFlight']);
 

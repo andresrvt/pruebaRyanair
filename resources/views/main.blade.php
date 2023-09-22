@@ -48,7 +48,7 @@
                                 <span class="input-group-text bg-light d-block">
                                     <i class="fa-solid fa-arrow-left"></i>
                                 </span>
-                                <input type="text" class="form-control" id="date" />
+                                <input type="date" class="form-control text-center" id="date" />
                                 <div class="input-group-append">
                                     <span class="input-group-text bg-light d-block">
                                         <i class="fa-solid fa-arrow-right"></i>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="col-2 py-2">
-                            <select class="form-select select" aria-label="Default select example">
+                            <select class="form-select select py-1" aria-label="Default select example">
                                 <option selected>TFS</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="text-center py-5 col-8">
-                    <span class="operations">Operations</span>
+                    <span class="operations">Sevilla Arrivals</span>
                 </div>
             </div>
         </div>
@@ -200,9 +200,6 @@
                 </div>
                 <div class="modal-body">
                     <p>Ident: <span id="flightIdent">{{ $flight->ident }}</span></p>
-
-
-                    <!-- Agrega más campos de información del vuelo aquí -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -213,62 +210,11 @@
 
 
     <script>
-        // Verificar si hay un nuevo vuelo (simulado con una variable isNewFlight)
-        var isNewFlight = true; // Debes actualizar esta variable según tu lógica
+        var isNewFlight = true; 
 
-        // Mostrar el modal si hay un nuevo vuelo
         if (isNewFlight) {
             $('#newFlightModal').modal('show');
         }
-    </script>
-
-    <script>
-        // Función para mostrar los `ident` de los vuelos en el modal
-        function mostrarVuelos(vuelos) {
-            // Limpia el contenido actual del modal
-            $('#newFlightIdentList').empty();
-
-            // Itera sobre los vuelos y agrega sus `ident` al modal
-            vuelos.forEach(function(vuelo) {
-                $('#newFlightIdentList').append('<li>' + vuelo.ident + '</li>');
-            });
-
-            // Muestra el modal
-            $('#newFlightModal').modal('show');
-        }
-
-        // Función para obtener los vuelos previamente mostrados desde una cookie
-        function obtenerVuelosPrevios() {
-            var vuelosPrevios = [];
-
-            // Obtener el valor de la cookie que almacena los IDs de vuelos previamente mostrados
-            var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)vuelosPrevios\s*=\s*([^;]*).*$)|^.*$/, "$1");
-
-            if (cookieValue) {
-                vuelosPrevios = cookieValue.split('|');
-            }
-
-            return vuelosPrevios;
-        }
-
-        // Obtener la lista de vuelos previamente mostrados
-        var vuelosPrevios = obtenerVuelosPrevios();
-
-        // Obtener la lista de vuelos más recientes de la variable $flights
-        var vuelosRecientes = $flights; // Asegúrate de que $flights contenga tus vuelos
-
-        // Identificar los vuelos nuevos que no estaban en la lista previa
-        var vuelosNuevos = vuelosRecientes.filter(function(vuelo) {
-            return !vuelosPrevios.includes(vuelo.ident);
-        });
-
-        // Mostrar los `ident` de los vuelos nuevos en el modal
-        mostrarVuelos(vuelosNuevos);
-
-        // Almacenar los IDs de los vuelos mostrados en la cookie
-        document.cookie = "vuelosPrevios=" + vuelosRecientes.map(function(vuelo) {
-            return vuelo.ident;
-        }).join('|');
     </script>
 
     <script>
