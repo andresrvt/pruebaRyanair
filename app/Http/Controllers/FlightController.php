@@ -83,6 +83,7 @@ class FlightController extends Controller
         $apiKey = 'aW21dg0PAgsIVPbdxe4Fvx7TI3uej00M';
         $fxmlUrl = "https://aeroapi.flightaware.com/aeroapi/airports/SVQ/flights/scheduled_arrivals";
     
+        $ident = 'SWA45';
         $queryParams = array(
             'max_pages' => 2
         );
@@ -91,50 +92,50 @@ class FlightController extends Controller
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('x-apikey: ' . $apiKey));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-
+    
         if ($result = curl_exec($ch)) {
             curl_close($ch);
             $data = json_decode($result, true);
-        
-            // Verificar si 'scheduled_arrivals' está presente y es un array
+    
             if (isset($data['scheduled_arrivals']) && is_array($data['scheduled_arrivals'])) {
                 $flights = [];
-        
+    
                 foreach ($data['scheduled_arrivals'] as $arrival) {
-                    $flight = new Flight();
-        
-                    // Acceder a atributos en el nivel superior del objeto arrival
-                    $flight->ident = $arrival['ident'];
-                    $flight->status = $arrival['status'];
-                    $flight->gate_origin = $arrival['gate_origin'];
-                    $flight->progress_percent = $arrival['progress_percent'];
-        
-                    // Acceder a atributos dentro de objetos anidados (origin y destination)
+                    // Definir las condiciones para buscar un registro existente
+                    $conditions = ['ident' => $arrival['ident']];
+    
+                    // Definir los valores a actualizar o insertar
+                    $values = [
+                        'status' => $arrival['status'],
+                        'gate_origin' => $arrival['gate_origin'],
+                        'progress_percent' => $arrival['progress_percent'],
+                    ];
+    
+                    // Intentar actualizar o insertar el registro
+                    Flight::updateOrInsert($conditions, $values);
+    
+                    // Recuperar el registro actualizado o insertado
+                    $flight = Flight::where($conditions)->first();
+    
                     if (isset($arrival['origin'])) {
                         $flight->origin_code = $arrival['origin']['code'];
                         $flight->origin_city = $arrival['origin']['city'];
                     }
-        
+    
                     if (isset($arrival['destination'])) {
                         $flight->destination_code = $arrival['destination']['code'];
                         $flight->destination_city = $arrival['destination']['city'];
                     }
-        
-                    // Puedes continuar accediendo a otros atributos anidados según sea necesario
-        
-                    // Agregar el objeto Flight al array de vuelos
+    
+                    $flight->save();
                     $flights[] = $flight;
                 }
-        
-                // Ahora, $flights contiene una lista de objetos Flight con los atributos deseados
-                // Puedes pasar $flights a tu vista o realizar otras operaciones con ellos
+    
                 return view('main', ['flights' => $flights]);
             }
         }
-        
-        // Maneja el caso en el que la solicitud cURL falla o el JSON no es válido
-        
-        }
+    }
+    
 
 
 }

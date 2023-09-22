@@ -15,8 +15,9 @@
         crossorigin="anonymous">
     <link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('assets/css/custom.css') }}" rel="stylesheet" />
-    <!-- Uncomment the next line if you plan to use Bootstrap Datepicker -->
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> --}}
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
 
     <!-- ===============================================-->
     <!-- JavaScripts -->
@@ -125,13 +126,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($flights as $flight)
-                                    <tr>
-                                        <td class="changed">{{ $flight->ident }}</td>
-                                        <td class="changed">{{ $flight->status }}</td>
-                                        <td class="changed">{{ $flight->gate_origin }}</td>
-                                        <td class="changed">{{ $flight->progress_percent }}</td>
+                                <tr>
+                                    @foreach ($flights as $flight)
+                                <tr>
+                                    <td class="flight-ident">{{ $flight->ident }}</td>
+                                    <td class="flight-status">{{ $flight->status }}</td>
+                                    <td class="flight-gate-origin">{{ $flight->gate_origin }}</td>
+                                    <td class="flight-progress">{{ $flight->progress_percent }}</td>
+                                </tr>
                                 @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -267,7 +271,11 @@
         }).join('|');
     </script>
 
-
+    <script>
+        $(function() {
+            $("#datepicker").datepicker();
+        });
+    </script>
 
     <script type="text/javascript">
         $(function() {
@@ -286,20 +294,64 @@
             $('#datepicker').datepicker();
         });
     </script>
+    
+<script>
+    // Función para obtener el estado anterior de la página desde una cookie
+    function obtenerEstadoAnterior() {
+        var estadoAnterior = {};
 
-    <script>
-        // Verificar si hay un nuevo vuelo (simulado con una variable isNewFlight)
-        var isNewFlight = true; // Debes actualizar esta variable según tu lógica
+        // Obtener el valor de la cookie que almacena el estado anterior
+        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)estadoAnterior\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
-        // Mostrar el modal si hay un nuevo vuelo
-        $(document).ready(function() {
-            if (isNewFlight) {
-                $('#newFlightModal').modal('show');
+        if (cookieValue) {
+            estadoAnterior = JSON.parse(cookieValue);
+        }
+
+        return estadoAnterior;
+    }
+
+    // Comparar el estado anterior con el estado actual y aplicar la clase changed-color si hay cambios
+    $(document).ready(function() {
+        var estadoAnterior = obtenerEstadoAnterior();
+
+        // Iterar sobre las filas de vuelo y comparar con el estado anterior
+        $('.flight-ident').each(function(index, element) {
+            var ident = $(element).text();
+            var status = $(element).closest('tr').find('.flight-status').text();
+            var gateOrigin = $(element).closest('tr').find('.flight-gate-origin').text();
+            var progressPercent = $(element).closest('tr').find('.flight-progress').text();
+
+            if (
+                estadoAnterior[ident] &&
+                (estadoAnterior[ident].status !== status ||
+                estadoAnterior[ident].gateOrigin !== gateOrigin ||
+                estadoAnterior[ident].progressPercent !== progressPercent)
+            ) {
+                // Hay un cambio en esta fila, aplica la clase CSS changed-color
+                $(element).closest('tr').addClass('changed-color');
             }
         });
 
-        // Resto de tu código JavaScript aquí
-    </script>
+        // Guardar el estado actual en una cookie
+        var estadoActual = {};
+
+        $('.flight-ident').each(function(index, element) {
+            var ident = $(element).text();
+            var status = $(element).closest('tr').find('.flight-status').text();
+            var gateOrigin = $(element).closest('tr').find('.flight-gate-origin').text();
+            var progressPercent = $(element).closest('tr').find('.flight-progress').text();
+
+            estadoActual[ident] = {
+                status: status,
+                gateOrigin: gateOrigin,
+                progressPercent: progressPercent
+            };
+        });
+
+        document.cookie = "estadoAnterior=" + JSON.stringify(estadoActual);
+    });
+</script>
+
 
     {{-- <script>
         // Función que recarga la página cada 5 segundos (5000 milisegundos)

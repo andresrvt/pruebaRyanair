@@ -44,7 +44,7 @@ thead{
     color: gold;
 }
 
-.changed-background {
-    background-color: yellow; /* Cambia el color de fondo a amarillo cuando cambia */
+.changed-color {
+    background-color: gold; /* Cambia el color de fondo a amarillo cuando cambia */
 }
 
