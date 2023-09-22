@@ -17,7 +17,7 @@
     <link href="{{ URL::asset('assets/css/custom.css') }}" rel="stylesheet" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-
+    <link rel="icon" type="image/jpg" href="{{ URL::asset('assets/img/logo.png')}}"/>
 
     <!-- ===============================================-->
     <!-- JavaScripts -->
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="text-center py-5 col-8">
-                    <span class="operations">Sevilla Arrivals</span>
+                    <span class="operations">Seville Arrivals</span>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Ident: <span id="flightIdent">{{ $flight->ident }}</span></p>
+                    <p>Ident: <span id="flightIdent">{{ $flight->ident }} - Origin: {{$flight->origin_city}}</span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -298,16 +298,14 @@
     });
 </script>
 
-
     {{-- <script>
-        // Función que recarga la página cada 5 segundos (5000 milisegundos)
         function autoReload() {
             location.reload();
         }
 
-        // Llama a la función cada 5000 milisegundos (5 segundos)
-        setInterval(autoReload, 5000);
+        setInterval(autoReload, 20000);
     </script> --}}
+
 </body>
 
 </html>
