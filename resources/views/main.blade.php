@@ -298,13 +298,13 @@
     });
 </script>
 
-    {{-- <script>
+    <script>
         function autoReload() {
             location.reload();
         }
 
         setInterval(autoReload, 20000);
-    </script> --}}
+    </script>
 
 </body>
 
